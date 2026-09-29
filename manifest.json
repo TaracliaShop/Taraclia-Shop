@@ -1,0 +1,16 @@
+{
+  "name": "Taraclia&Shop",
+  "short_name": "Taraclia",
+  "start_url": "./index.html",
+  "display": "standalone",
+  "orientation": "portrait",
+  "background_color": "#0a0612",
+  "theme_color": "#0a0612",
+  "icons": [
+    {
+      "src": "https://github.com/taracliashop/Taraclia-Shop/raw/main/IMG_20260927_205004_333.jpg",
+      "sizes": "512x512",
+      "type": "image/jpeg"
+    }
+  ]
+}
