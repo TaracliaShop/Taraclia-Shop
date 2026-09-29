@@ -10,10 +10,12 @@
 <meta name="apple-mobile-web-app-title" content="Taraclia&Shop">
 <link rel="apple-touch-icon" href="https://github.com/taracliashop/Taraclia-Shop/raw/main/IMG_20260927_205004_333.jpg">
 <link rel="icon" href="https://github.com/taracliashop/Taraclia-Shop/raw/main/IMG_20260927_205004_333.jpg">
+<link rel="manifest" href="manifest.json">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
 <link href="https://fonts.googleapis.com/css2?family=Unbounded:wght@400;600;800&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
 <script src="https://www.gstatic.com/firebasejs/10.7.0/firebase-app-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/10.7.0/firebase-firestore-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.7.0/firebase-storage-compat.js"></script>
 <style>
 *{margin:0;padding:0;box-sizing:border-box;font-family:'Inter',-apple-system,system-ui,sans-serif;-webkit-tap-highlight-color:transparent}
 :root{--bg:#0a0612;--surface:rgba(255,255,255,0.04);--border:rgba(168,85,247,0.15);--border-hi:rgba(168,85,247,0.5);--neon:#a855f7;--neon-2:#d946ef;--cyan:#22d3ee;--text:#f4f0ff;--text-dim:#9b8db0;--danger:#ff3860;--success:#22c55e}
@@ -46,7 +48,7 @@ body::after{width:450px;height:450px;background:var(--cyan);bottom:-180px;right:
 .filter-btn:hover{border-color:var(--border-hi);color:var(--text)}
 .filter-btn.active{background:linear-gradient(135deg,var(--neon),var(--neon-2));border-color:transparent;color:#fff;box-shadow:0 0 25px rgba(168,85,247,0.5)}
 .products-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(240px,1fr));gap:1rem;margin-bottom:2rem}
-.product-card{background:linear-gradient(160deg,rgba(255,255,255,0.05),rgba(255,255,255,0.02));backdrop-filter:blur(15px);border:1px solid var(--border);border-radius:1.5rem;padding:1rem;display:flex;flex-direction:column;transition:.3s ease;position:relative;overflow:hidden}
+.product-card{background:linear-gradient(160deg,rgba(255,255,255,0.05),rgba(255,255,255,0.02));backdrop-filter:blur(15px);border:1px solid var(--border);border-radius:1.5rem;padding:1rem;display:flex;flex-direction:column;transition:.3s ease;position:relative;overflow:hidden;cursor:pointer}
 .product-card:hover{border-color:var(--border-hi);transform:translateY(-5px);box-shadow:0 20px 40px rgba(0,0,0,0.5),0 0 40px rgba(168,85,247,0.25)}
 .product-badge{position:absolute;top:.8rem;right:.8rem;background:linear-gradient(135deg,var(--neon-2),var(--neon));color:#fff;font-size:.65rem;font-weight:800;padding:.25rem .6rem;border-radius:1rem;letter-spacing:.8px;text-transform:uppercase;box-shadow:0 0 15px rgba(217,70,239,0.7);z-index:2}
 .product-img{height:130px;display:flex;align-items:center;justify-content:center;margin-bottom:.8rem}
@@ -84,6 +86,7 @@ body::after{width:450px;height:450px;background:var(--cyan);bottom:-180px;right:
 .footer b{color:var(--neon-2)}
 .toast{position:fixed;bottom:30px;left:50%;transform:translateX(-50%) translateY(80px);background:linear-gradient(135deg,var(--neon),var(--neon-2));color:#fff;font-weight:700;padding:.9rem 1.6rem;border-radius:1rem;box-shadow:0 0 40px rgba(168,85,247,0.8);z-index:5000;opacity:0;transition:.35s cubic-bezier(.4,0,.2,1);pointer-events:none;font-size:.95rem;max-width:90vw;text-align:center}
 .toast.show{opacity:1;transform:translateX(-50%) translateY(0)}
+/* LOCK SCREEN */
 .lock-screen{position:fixed;inset:0;background:radial-gradient(circle at 50% 20%,#14091f 0%,#0a0612 70%);z-index:999999;display:flex;justify-content:center;align-items:center;padding:1.5rem;padding-top:calc(1.5rem + env(safe-area-inset-top));padding-bottom:calc(1.5rem + env(safe-area-inset-bottom));overflow-y:auto}
 .lock-card{background:linear-gradient(160deg,rgba(255,255,255,0.06),rgba(255,255,255,0.02));backdrop-filter:blur(20px);border:1px solid var(--border-hi);border-radius:2rem;padding:2rem 1.6rem;width:100%;max-width:420px;text-align:center;box-shadow:0 30px 80px rgba(0,0,0,0.9),0 0 60px rgba(168,85,247,0.3);animation:slideUp .5s cubic-bezier(.4,0,.2,1)}
 .lock-logo{display:flex;align-items:center;justify-content:center;gap:.6rem;font-family:'Unbounded',sans-serif;font-size:1.2rem;font-weight:800;margin-bottom:1.5rem}
@@ -103,6 +106,7 @@ body::after{width:450px;height:450px;background:var(--cyan);bottom:-180px;right:
 .lock-check-btn{width:100%;background:var(--surface);border:1px solid var(--border-hi);color:var(--text);font-weight:700;font-size:.95rem;padding:.9rem;border-radius:1.2rem;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:8px;margin-bottom:.6rem}
 .lock-check-btn:hover{background:rgba(168,85,247,0.15);border-color:var(--neon-2);color:var(--neon-2)}
 .lock-hint{font-size:.75rem;color:var(--text-dim);margin-top:1rem;line-height:1.5;opacity:.7}
+/* ORDER MODAL */
 .order-overlay{position:fixed;inset:0;background:rgba(10,6,18,0.9);backdrop-filter:blur(12px);z-index:2500;display:none;justify-content:center;align-items:center;padding:1.5rem 1rem;overflow-y:auto}
 .order-overlay.open{display:flex}
 .order-card{background:linear-gradient(160deg,#14091f,#0a0612);border:1px solid var(--border-hi);border-radius:2rem;padding:2rem 1.6rem;width:100%;max-width:440px;box-shadow:0 30px 80px rgba(0,0,0,0.9),0 0 60px rgba(168,85,247,0.3);animation:slideUp .4s cubic-bezier(.4,0,.2,1)}
@@ -127,7 +131,55 @@ body::after{width:450px;height:450px;background:var(--cyan);bottom:-180px;right:
 .order-submit-btn:disabled{opacity:.6;cursor:not-allowed}
 .order-cancel-btn{width:100%;background:transparent;border:1px solid var(--border);color:var(--text-dim);font-weight:600;font-size:.9rem;padding:.8rem;border-radius:1.2rem;cursor:pointer;font-family:inherit;transition:.2s}
 .order-cancel-btn:hover{border-color:var(--danger);color:var(--danger)}
-.admin-overlay{position:fixed;inset:0;background:rgba(10,6,18,0.9);backdrop-filter:blur(12px);z-index:3000;display:none;justify-content:center;align-items:flex-start;padding:1.5rem 1rem;overflow-y:auto}
+/* PRODUCT FLAVORS */
+.product-detail-flavors{margin-bottom:1.2rem}
+.product-detail-flavors-label{font-size:.85rem;color:var(--text-dim);font-weight:700;margin-bottom:.6rem;text-transform:uppercase;letter-spacing:.5px;display:flex;align-items:center;gap:.5rem}
+.product-detail-flavors-label i{color:var(--neon-2)}
+.product-detail-flavors-list{display:flex;flex-wrap:wrap;gap:.5rem}
+.flavor-btn{background:var(--surface);border:1.5px solid var(--border);color:var(--text-dim);padding:.55rem 1rem;border-radius:2rem;cursor:pointer;font-weight:600;font-size:.85rem;font-family:inherit;transition:.2s;display:flex;align-items:center;gap:.4rem}
+.flavor-btn:hover{border-color:var(--border-hi);color:var(--text)}
+.flavor-btn.selected{background:linear-gradient(135deg,var(--neon),var(--neon-2));border-color:transparent;color:#fff;box-shadow:0 0 20px rgba(168,85,247,0.5)}
+.flavor-btn.selected::before{content:'✓';font-weight:900}
+.flavor-warning{color:var(--danger);font-size:.8rem;margin-top:.6rem;display:none;text-align:center}
+.flavor-warning.show{display:block}
+/* PRODUCT DETAIL MODAL */
+.product-detail-overlay{position:fixed;inset:0;background:rgba(10,6,18,0.92);backdrop-filter:blur(15px);z-index:2400;display:none;justify-content:center;align-items:flex-start;padding:1.5rem 1rem;overflow-y:auto}
+.product-detail-overlay.open{display:flex}
+.product-detail-card{background:linear-gradient(160deg,#14091f,#0a0612);border:1px solid var(--border-hi);border-radius:2rem;padding:1.5rem;width:100%;max-width:480px;box-shadow:0 30px 80px rgba(0,0,0,0.9),0 0 60px rgba(168,85,247,0.3);animation:slideUp .4s cubic-bezier(.4,0,.2,1);position:relative;margin:auto}
+.product-detail-close{position:absolute;top:1rem;right:1rem;background:var(--surface);border:1px solid var(--border);color:var(--text-dim);width:38px;height:38px;border-radius:12px;font-size:1.5rem;cursor:pointer;display:flex;align-items:center;justify-content:center;line-height:1;z-index:2;transition:.2s}
+.product-detail-close:hover{color:var(--danger);border-color:var(--danger);transform:rotate(90deg)}
+.product-detail-badge{position:absolute;top:1rem;left:1rem;background:linear-gradient(135deg,var(--neon-2),var(--neon));color:#fff;font-size:.7rem;font-weight:800;padding:.3rem .8rem;border-radius:1rem;letter-spacing:.8px;text-transform:uppercase;box-shadow:0 0 15px rgba(217,70,239,0.7);z-index:2}
+.product-detail-img{height:220px;display:flex;align-items:center;justify-content:center;margin:1rem 0 1.2rem;background:rgba(255,255,255,0.03);border-radius:1.5rem;overflow:hidden;border:1px solid var(--border)}
+.product-detail-img i{font-size:6rem;background:linear-gradient(135deg,var(--neon),var(--cyan));-webkit-background-clip:text;background-clip:text;color:transparent;filter:drop-shadow(0 0 30px rgba(168,85,247,0.7))}
+.product-detail-img img{max-width:100%;max-height:100%;object-fit:contain;padding:.5rem}
+.product-detail-title{font-family:'Unbounded',sans-serif;font-size:1.3rem;font-weight:800;margin-bottom:.4rem;line-height:1.25;color:var(--text)}
+.product-detail-category{display:inline-block;background:rgba(168,85,247,0.15);color:var(--neon-2);font-size:.75rem;font-weight:700;padding:.3rem .8rem;border-radius:1rem;margin-bottom:.8rem;text-transform:uppercase;letter-spacing:.5px}
+.product-detail-desc{font-size:.9rem;color:var(--text-dim);margin-bottom:1rem;line-height:1.5}
+.product-detail-specs{display:flex;flex-direction:column;gap:.5rem;margin-bottom:1.2rem;background:rgba(255,255,255,0.02);border:1px solid var(--border);border-radius:1rem;padding:.9rem 1rem}
+.product-detail-spec{display:flex;justify-content:space-between;align-items:center;font-size:.85rem;padding:.35rem 0}
+.product-detail-spec:not(:last-child){border-bottom:1px solid rgba(168,85,247,0.1)}
+.product-detail-spec-label{color:var(--text-dim);display:flex;align-items:center;gap:.5rem}
+.product-detail-spec-label i{color:var(--cyan);font-size:.85rem;width:16px}
+.product-detail-spec-value{color:var(--text);font-weight:700}
+.product-detail-price{font-family:'Unbounded',sans-serif;font-size:2rem;font-weight:800;margin-bottom:1.2rem;text-align:center;background:linear-gradient(135deg,var(--cyan),var(--neon-2));-webkit-background-clip:text;background-clip:text;color:transparent;letter-spacing:-.5px}
+.product-detail-price small{font-size:1rem;font-weight:600;color:var(--text-dim);-webkit-text-fill-color:var(--text-dim);margin-left:4px}
+.product-detail-add{width:100%;background:linear-gradient(135deg,var(--neon),var(--neon-2));border:none;color:#fff;font-family:'Unbounded',sans-serif;font-weight:700;font-size:1rem;padding:1rem;border-radius:1.2rem;cursor:pointer;box-shadow:0 6px 25px rgba(168,85,247,0.5);display:flex;align-items:center;justify-content:center;gap:10px;transition:.2s}
+.product-detail-add:hover{transform:translateY(-2px);box-shadow:0 10px 35px rgba(168,85,247,0.8)}
+.product-detail-add:active{transform:scale(.98)}
+/* ADMIN LOGIN */
+.admin-login-overlay{position:fixed;inset:0;background:rgba(10,6,18,0.95);backdrop-filter:blur(15px);z-index:3000;display:none;justify-content:center;align-items:center;padding:1.5rem}
+.admin-login-overlay.open{display:flex}
+.admin-login-card{background:linear-gradient(160deg,#14091f,#0a0612);border:1px solid var(--border-hi);border-radius:2rem;padding:2rem 1.6rem;width:100%;max-width:380px;text-align:center;box-shadow:0 30px 80px rgba(0,0,0,0.9),0 0 60px rgba(168,85,247,0.3)}
+.admin-login-icon{width:70px;height:70px;border-radius:50%;background:linear-gradient(135deg,var(--neon),var(--neon-2));display:flex;align-items:center;justify-content:center;margin:0 auto 1.3rem;font-size:1.8rem;color:#fff;box-shadow:0 0 40px rgba(168,85,247,0.6)}
+.admin-login-title{font-family:'Unbounded',sans-serif;font-size:1.2rem;font-weight:800;margin-bottom:.4rem}
+.admin-login-subtitle{font-size:.85rem;color:var(--text-dim);margin-bottom:1.5rem}
+.admin-pin-input{width:100%;background:var(--surface);border:2px solid var(--border);color:var(--text);padding:1rem;border-radius:1rem;font-size:1.5rem;text-align:center;letter-spacing:8px;font-weight:800;outline:none;font-family:'Unbounded',sans-serif;margin-bottom:1rem;transition:.2s}
+.admin-pin-input:focus{border-color:var(--border-hi);box-shadow:0 0 20px rgba(168,85,247,0.4)}
+.admin-login-btn{width:100%;background:linear-gradient(135deg,var(--cyan),var(--neon));border:none;color:#fff;font-family:'Unbounded',sans-serif;font-weight:700;font-size:1rem;padding:1rem;border-radius:1.2rem;cursor:pointer;box-shadow:0 6px 25px rgba(34,211,238,0.5);margin-bottom:.6rem}
+.admin-login-cancel{width:100%;background:transparent;border:1px solid var(--border);color:var(--text-dim);font-weight:600;font-size:.9rem;padding:.8rem;border-radius:1.2rem;cursor:pointer;font-family:inherit}
+.admin-login-error{color:var(--danger);font-size:.85rem;margin-bottom:.8rem;min-height:1.2rem}
+/* ADMIN PANEL */
+.admin-overlay{position:fixed;inset:0;background:rgba(10,6,18,0.9);backdrop-filter:blur(12px);z-index:3100;display:none;justify-content:center;align-items:flex-start;padding:1.5rem 1rem;overflow-y:auto}
 .admin-overlay.open{display:flex}
 .admin-panel{background:linear-gradient(160deg,#14091f,#0a0612);border:1px solid var(--border-hi);border-radius:2rem;width:100%;max-width:1000px;padding:1.8rem;box-shadow:0 30px 80px rgba(0,0,0,0.9),0 0 60px rgba(168,85,247,0.2)}
 .admin-header{display:flex;justify-content:space-between;align-items:center;margin-bottom:1.5rem;padding-bottom:1rem;border-bottom:1px solid var(--border)}
@@ -163,7 +215,7 @@ body::after{width:450px;height:450px;background:var(--cyan);bottom:-180px;right:
 .admin-empty{color:var(--text-dim);text-align:center;padding:2rem;grid-column:1/-1}
 .admin-hint{font-size:.78rem;color:var(--text-dim);padding:.7rem 1rem;background:var(--surface);border-radius:.9rem;border-left:3px solid var(--neon-2);margin-bottom:1.2rem;line-height:1.5}
 .admin-hint code{background:rgba(168,85,247,0.15);padding:.1rem .4rem;border-radius:.3rem;color:var(--neon-2);font-weight:600}
-@media(max-width:700px){.container{padding:.9rem}.logo{font-size:1rem}.logo-icon{width:34px;height:34px}.cart-icon{padding:.5rem .9rem;font-size:.85rem}.products-grid{grid-template-columns:1fr 1fr;gap:.8rem}.product-img{height:110px}.product-img i{font-size:3rem}.product-title{font-size:.85rem}.product-price{font-size:1.15rem}.add-btn{padding:.65rem .8rem;font-size:.8rem}.lock-card{padding:1.6rem 1.3rem}.lock-title{font-size:1.15rem}.lock-icon-big{width:70px;height:70px;font-size:2rem}.admin-form{grid-template-columns:1fr}.admin-panel{padding:1.2rem}.order-card{padding:1.5rem 1.2rem}}
+@media(max-width:700px){.container{padding:.9rem}.logo{font-size:1rem}.logo-icon{width:34px;height:34px}.cart-icon{padding:.5rem .9rem;font-size:.85rem}.products-grid{grid-template-columns:1fr 1fr;gap:.8rem}.product-img{height:110px}.product-img i{font-size:3rem}.product-title{font-size:.85rem}.product-price{font-size:1.15rem}.add-btn{padding:.65rem .8rem;font-size:.8rem}.lock-card{padding:1.6rem 1.3rem}.lock-title{font-size:1.15rem}.lock-icon-big{width:70px;height:70px;font-size:2rem}.admin-form{grid-template-columns:1fr}.admin-panel{padding:1.2rem}.order-card{padding:1.5rem 1.2rem}.product-detail-card{padding:1.2rem}.product-detail-img{height:180px}.product-detail-img i{font-size:4.5rem}.product-detail-price{font-size:1.6rem}.product-detail-title{font-size:1.1rem}}
 @media(max-width:400px){.products-grid{grid-template-columns:1fr}.logo-text{font-size:.95rem}}
 </style>
 </head>
@@ -221,6 +273,7 @@ body::after{width:450px;height:450px;background:var(--cyan);bottom:-180px;right:
 
 <div class="toast" id="toast">Готово</div>
 
+<!-- ЗАМОК -->
 <div class="lock-screen" id="lockScreen">
     <div class="lock-card">
         <div class="lock-logo">
@@ -256,49 +309,78 @@ body::after{width:450px;height:450px;background:var(--cyan);bottom:-180px;right:
         <p class="lock-hint">💡 После установки иконка появится на рабочем столе.</p>
     </div>
 </div>
+
+<!-- КАРТОЧКА ТОВАРА -->
+<div class="product-detail-overlay" id="productDetailOverlay">
+    <div class="product-detail-card">
+        <button class="product-detail-close" id="productDetailClose">&times;</button>
+        <div class="product-detail-badge" id="pdBadge" style="display:none;"></div>
+        <div class="product-detail-img" id="pdImg"></div>
+        <h2 class="product-detail-title" id="pdTitle"></h2>
+        <span class="product-detail-category" id="pdCategory"></span>
+        <p class="product-detail-desc" id="pdDesc"></p>
+        <div class="product-detail-specs" id="pdSpecs"></div>
+        <div class="product-detail-flavors" id="pdFlavorsBox" style="display:none;">
+            <div class="product-detail-flavors-label"><i class="fas fa-candy-cane"></i> Выбери вкус:</div>
+            <div class="product-detail-flavors-list" id="pdFlavorsList"></div>
+            <div class="flavor-warning" id="pdFlavorWarning">⚠️ Выбери вкус, чтобы добавить</div>
+        </div>
+        <div class="product-detail-price" id="pdPrice"></div>
+        <button class="product-detail-add" id="pdAddBtn">
+            <i class="fas fa-cart-plus"></i> В корзину
+        </button>
+    </div>
+</div>
+
+<!-- МОДАЛКА ЗАКАЗА -->
 <div class="order-overlay" id="orderOverlay">
     <div class="order-card">
         <h2 class="order-title">Оформление заказа</h2>
         <p class="order-subtitle">Заполни данные — мы свяжемся с тобой</p>
-
         <div class="order-field">
             <label>Твой Telegram *</label>
             <input type="text" id="orderUsername" placeholder="@username" required>
         </div>
-
         <div class="order-field">
             <label>Телефон *</label>
             <input type="tel" id="orderPhone" placeholder="+373 __ ___ ___" required>
         </div>
-
         <div class="order-field">
             <label>Способ оплаты *</label>
             <div class="order-payment" id="orderPayment">
                 <button type="button" class="order-payment-btn active" data-payment="Наличными">
-                    <i class="fas fa-money-bill-wave"></i>
-                    Наличными
+                    <i class="fas fa-money-bill-wave"></i> Наличными
                 </button>
                 <button type="button" class="order-payment-btn" data-payment="Картой">
-                    <i class="fas fa-credit-card"></i>
-                    Картой
+                    <i class="fas fa-credit-card"></i> Картой
                 </button>
             </div>
         </div>
-
         <div class="order-field">
             <label>Комментарий (необязательно)</label>
             <textarea id="orderComment" placeholder="Например: позвонить после 18:00"></textarea>
         </div>
-
         <div class="order-summary">
             <span>Итого:</span>
             <span id="orderTotal">0 MDL</span>
         </div>
-
         <button class="order-submit-btn" id="orderSubmitBtn">
             <i class="fas fa-paper-plane"></i> Отправить заказ
         </button>
         <button class="order-cancel-btn" id="orderCancelBtn">Отмена</button>
+    </div>
+</div>
+<div class="admin-login-overlay" id="adminLoginOverlay">
+    <div class="admin-login-card">
+        <div class="admin-login-icon"><i class="fas fa-lock"></i></div>
+        <h2 class="admin-login-title">Вход в админку</h2>
+        <p class="admin-login-subtitle">Введите PIN-код</p>
+        <div class="admin-login-error" id="adminLoginError"></div>
+        <input type="password" maxlength="10" class="admin-pin-input" id="adminPinInput" placeholder="••••••" autocomplete="off">
+        <button class="admin-login-btn" id="adminLoginBtn">
+            <i class="fas fa-sign-in-alt"></i> Войти
+        </button>
+        <button class="admin-login-cancel" id="adminLoginCancel">Отмена</button>
     </div>
 </div>
 
@@ -308,7 +390,7 @@ body::after{width:450px;height:450px;background:var(--cyan);bottom:-180px;right:
             <h2><i class="fas fa-user-shield"></i> Админ-панель</h2>
             <button class="admin-close" id="adminCloseBtn">&times;</button>
         </div>
-        <div class="admin-hint">💡 <b>Секрет:</b> кликни по логотипу <b>3 раза подряд</b>.</div>
+        <div class="admin-hint">💡 <b>Добавляй фото прямо с устройства!</b> И вкусы через запятую.</div>
         <div class="admin-tabs">
             <button class="admin-tab active" data-tab="form">➕ Товар</button>
             <button class="admin-tab" data-tab="list">📦 Список</button>
@@ -322,12 +404,28 @@ body::after{width:450px;height:450px;background:var(--cyan);bottom:-180px;right:
                 <div><label>Категория *</label><select id="field-category"><option value="vape">Вейп</option><option value="liquid">Жидкость</option><option value="disposable">Одноразка</option><option value="accessory">Аксессуар</option></select></div>
                 <div><label>Бейдж</label><input type="text" id="field-badge" placeholder="ХИТ / NEW"></div>
                 <div class="full"><label>Описание</label><input type="text" id="field-desc" placeholder="Кратко о товаре"></div>
-                <div><label>Вкус</label><input type="text" id="field-flavor" placeholder="Клубника"></div>
+                <div class="full"><label>Вкусы (через запятую)</label><input type="text" id="field-flavor" placeholder="Клубника, Манго, Арбуз"></div>
                 <div><label>Объём, мл</label><input type="text" id="field-volume" placeholder="100мл"></div>
                 <div><label>Крепость</label><input type="text" id="field-nicotine" placeholder="3мг / 2%"></div>
                 <div><label>Сопротивление Ω</label><input type="text" id="field-ohm" placeholder="0.2Ω"></div>
                 <div><label>Мощность W / Затяжек</label><input type="text" id="field-power" placeholder="177W / 5000"></div>
-                <div class="full"><label>URL картинки</label><input type="url" id="field-image" placeholder="https://..."></div>
+                <div class="full">
+                    <label>Картинка товара</label>
+                    <div id="imagePreviewBox" style="display:none;margin-bottom:.6rem;text-align:center;">
+                        <img id="imagePreview" style="max-width:100%;max-height:180px;border-radius:1rem;border:1px solid var(--border);">
+                    </div>
+                    <input type="url" id="field-image" placeholder="https://... или загрузи с устройства">
+                    <div style="display:grid;grid-template-columns:1fr 1fr;gap:.5rem;margin-top:.5rem;">
+                        <button type="button" class="admin-btn secondary" id="pickImageBtn" style="justify-content:center;">
+                            <i class="fas fa-camera"></i> С галереи
+                        </button>
+                        <button type="button" class="admin-btn secondary" id="clearImageBtn" style="justify-content:center;">
+                            <i class="fas fa-times"></i> Убрать
+                        </button>
+                    </div>
+                    <input type="file" id="imageFileInput" accept="image/*" style="display:none;">
+                    <div id="imageUploadStatus" style="font-size:.78rem;color:var(--text-dim);margin-top:.5rem;text-align:center;"></div>
+                </div>
                 <div class="full"><label>Иконка (если нет картинки)</label><select id="field-icon"><option value="fa-smoking">🚬 fa-smoking</option><option value="fa-tint">💧 fa-tint</option><option value="fa-bolt">⚡ fa-bolt</option><option value="fa-cog">⚙️ fa-cog</option><option value="fa-fire">🔥 fa-fire</option><option value="fa-star">⭐ fa-star</option></select></div>
             </form>
             <div class="admin-actions">
@@ -348,8 +446,9 @@ body::after{width:450px;height:450px;background:var(--cyan);bottom:-180px;right:
             </div>
         </div>
     </div>
-                  </div>
+</div>
 <script>
+// 🔒 ЖЁСТКИЙ ЗАМОК
 const IS_ALLOWED = (function () {
     const ua = navigator.userAgent || '';
     const url = location.href || '';
@@ -425,6 +524,7 @@ if (!IS_ALLOWED) {
 
 const TELEGRAM_BOT_TOKEN = "8673012231:AAG6bhYv3LcmwMrACiF00X8AtkdpdoK62Q4";
 const TELEGRAM_CHAT_ID = "1704203844";
+const ADMIN_PIN = "pip789";
 
 const firebaseConfig = {
   apiKey: "AIzaSyCKIN0HW479MFfTS8Yc2XEQYd_P-HhOAHw",
@@ -438,19 +538,20 @@ const firebaseConfig = {
 firebase.initializeApp(firebaseConfig);
 const db = firebase.firestore();
 const productsRef = db.collection('products');
+const storage = firebase.storage();
 
 const DEFAULT_PRODUCTS = [
     {id:'1',title:'VooPoo Drag 4',desc:'Мощный мод',price:990,category:'vape',icon:'fa-smoking',badge:'ХИТ',image:'',flavor:'',volume:'',nicotine:'',ohm:'',power:'177W'},
     {id:'2',title:'GeekVape Aegis',desc:'Водозащита',price:850,category:'vape',icon:'fa-smoking',badge:null,image:'',flavor:'',volume:'',nicotine:'',ohm:'',power:'100W'},
     {id:'3',title:'Vaporesso Gen 200',desc:'Лёгкий мод',price:1090,category:'vape',icon:'fa-smoking',badge:null,image:'',flavor:'',volume:'',nicotine:'',ohm:'',power:'220W'},
-    {id:'4',title:'Jam Monster Strawberry',desc:'Клубника',price:220,category:'liquid',icon:'fa-tint',badge:'3% NIC',image:'',flavor:'Клубника',volume:'100мл',nicotine:'3мг',ohm:'',power:''},
-    {id:'5',title:'Nasty Juice Cushman',desc:'Манго',price:175,category:'liquid',icon:'fa-tint',badge:null,image:'',flavor:'Манго',volume:'60мл',nicotine:'6мг',ohm:'',power:''},
-    {id:'6',title:'Husky Salt Blueberry',desc:'Черника, соль',price:160,category:'liquid',icon:'fa-tint',badge:'SALT',image:'',flavor:'Черника',volume:'30мл',nicotine:'30мг',ohm:'',power:''},
-    {id:'7',title:'Candy King Bubblegum',desc:'Жвачка',price:245,category:'liquid',icon:'fa-tint',badge:null,image:'',flavor:'Жвачка',volume:'100мл',nicotine:'3мг',ohm:'',power:''},
-    {id:'8',title:'Elf Bar BC5000',desc:'5000 затяжек',price:200,category:'disposable',icon:'fa-bolt',badge:'NEW',image:'',flavor:'Арбуз',volume:'',nicotine:'2%',ohm:'',power:'5000'},
-    {id:'9',title:'Lost Mary OS5000',desc:'5000 затяжек',price:230,category:'disposable',icon:'fa-bolt',badge:null,image:'',flavor:'Арбуз',volume:'',nicotine:'2%',ohm:'',power:'5000'},
-    {id:'10',title:'HQD Cuvie Plus',desc:'1200 затяжек',price:135,category:'disposable',icon:'fa-bolt',badge:null,image:'',flavor:'Манго',volume:'',nicotine:'5%',ohm:'',power:'1200'},
-    {id:'11',title:'Puff Bar XXL',desc:'1600 затяжек',price:160,category:'disposable',icon:'fa-bolt',badge:null,image:'',flavor:'Манго',volume:'',nicotine:'5%',ohm:'',power:'1600'},
+    {id:'4',title:'Jam Monster Strawberry',desc:'Клубника',price:220,category:'liquid',icon:'fa-tint',badge:'3% NIC',image:'',flavor:'Клубника, Манго, Арбуз',volume:'100мл',nicotine:'3мг',ohm:'',power:''},
+    {id:'5',title:'Nasty Juice Cushman',desc:'Манго',price:175,category:'liquid',icon:'fa-tint',badge:null,image:'',flavor:'Манго, Малина',volume:'60мл',nicotine:'6мг',ohm:'',power:''},
+    {id:'6',title:'Husky Salt Blueberry',desc:'Черника, соль',price:160,category:'liquid',icon:'fa-tint',badge:'SALT',image:'',flavor:'Черника, Мята',volume:'30мл',nicotine:'30мг',ohm:'',power:''},
+    {id:'7',title:'Candy King Bubblegum',desc:'Жвачка',price:245,category:'liquid',icon:'fa-tint',badge:null,image:'',flavor:'Жвачка, Кола',volume:'100мл',nicotine:'3мг',ohm:'',power:''},
+    {id:'8',title:'Elf Bar BC5000',desc:'5000 затяжек',price:200,category:'disposable',icon:'fa-bolt',badge:'NEW',image:'',flavor:'Арбуз, Клубника, Мята',volume:'',nicotine:'2%',ohm:'',power:'5000'},
+    {id:'9',title:'Lost Mary OS5000',desc:'5000 затяжек',price:230,category:'disposable',icon:'fa-bolt',badge:null,image:'',flavor:'Арбуз, Манго, Виноград',volume:'',nicotine:'2%',ohm:'',power:'5000'},
+    {id:'10',title:'HQD Cuvie Plus',desc:'1200 затяжек',price:135,category:'disposable',icon:'fa-bolt',badge:null,image:'',flavor:'Манго, Лимон',volume:'',nicotine:'5%',ohm:'',power:'1200'},
+    {id:'11',title:'Puff Bar XXL',desc:'1600 затяжек',price:160,category:'disposable',icon:'fa-bolt',badge:null,image:'',flavor:'Манго, Клубника',volume:'',nicotine:'5%',ohm:'',power:'1600'},
     {id:'12',title:'Испаритель GeekVape',desc:'Mesh, 0.2Ω',price:85,category:'accessory',icon:'fa-cog',badge:null,image:'',flavor:'',volume:'',nicotine:'',ohm:'0.2Ω',power:''},
     {id:'13',title:'Аккумулятор 18650',desc:'3000mAh, 35A',price:145,category:'accessory',icon:'fa-cog',badge:'2 шт',image:'',flavor:'',volume:'',nicotine:'',ohm:'',power:''},
     {id:'14',title:'Чехол для мода',desc:'Силикон, защита',price:65,category:'accessory',icon:'fa-cog',badge:null,image:'',flavor:'',volume:'',nicotine:'',ohm:'',power:''},
@@ -492,7 +593,8 @@ const CartModule = (function () {
         else cart.push({
             id: p.id, title: p.title, price: p.price, quantity: 1,
             category: p.category, flavor: p.flavor, volume: p.volume,
-            nicotine: p.nicotine, ohm: p.ohm, power: p.power
+            nicotine: p.nicotine, ohm: p.ohm, power: p.power,
+            selectedFlavor: p.selectedFlavor || null
         });
         return cart;
     }
@@ -569,9 +671,135 @@ const CartModule = (function () {
     const closeCart = () => cartPanel.classList.remove('open');
     window.ShopUI = { renderProducts, updateCartUI, showToast, closeCart };
 
+    // ===== КАРТОЧКА =====
+    const pdOverlay = document.getElementById('productDetailOverlay');
+    const pdClose = document.getElementById('productDetailClose');
+    const pdImg = document.getElementById('pdImg');
+    const pdTitle = document.getElementById('pdTitle');
+    const pdCategory = document.getElementById('pdCategory');
+    const pdDesc = document.getElementById('pdDesc');
+    const pdSpecs = document.getElementById('pdSpecs');
+    const pdPrice = document.getElementById('pdPrice');
+    const pdBadge = document.getElementById('pdBadge');
+    const pdAddBtn = document.getElementById('pdAddBtn');
+    const pdFlavorsBox = document.getElementById('pdFlavorsBox');
+    const pdFlavorsList = document.getElementById('pdFlavorsList');
+    const pdFlavorWarning = document.getElementById('pdFlavorWarning');
+
+    let pdCurrent = null;
+    const catNames = { vape:'Вейп', liquid:'Жидкость', disposable:'Одноразка', accessory:'Аксессуар' };
+
+    function openProductDetail(product) {
+        pdCurrent = product;
+        pdCurrent.selectedFlavor = null;
+
+        if (product.image) {
+            pdImg.innerHTML = `<img src="${product.image}" alt="${product.title}" onerror="this.style.display='none';this.parentNode.innerHTML='<i class=\\'fas ${product.icon}\\'></i>';">`;
+        } else {
+            pdImg.innerHTML = `<i class="fas ${product.icon}"></i>`;
+        }
+
+        if (product.badge) {
+            pdBadge.textContent = product.badge;
+            pdBadge.style.display = 'block';
+        } else {
+            pdBadge.style.display = 'none';
+        }
+
+        pdTitle.textContent = product.title;
+        pdCategory.textContent = catNames[product.category] || product.category;
+        pdDesc.textContent = product.desc || '';
+
+        const specs = [];
+        if (product.volume)   specs.push({ icon: 'fa-flask',      label: 'Объём', value: product.volume });
+        if (product.nicotine) specs.push({ icon: 'fa-bolt',       label: 'Крепость', value: product.nicotine });
+        if (product.ohm)      specs.push({ icon: 'fa-plug',       label: 'Сопротивление', value: product.ohm });
+        if (product.power)    specs.push({ icon: product.category === 'disposable' ? 'fa-fire' : 'fa-tachometer-alt', label: product.category === 'disposable' ? 'Затяжек' : 'Мощность', value: product.power });
+
+        if (specs.length > 0) {
+            pdSpecs.innerHTML = specs.map(s => `
+                <div class="product-detail-spec">
+                    <span class="product-detail-spec-label"><i class="fas ${s.icon}"></i> ${s.label}</span>
+                    <span class="product-detail-spec-value">${s.value}</span>
+                </div>
+            `).join('');
+            pdSpecs.style.display = 'flex';
+        } else {
+            pdSpecs.style.display = 'none';
+        }
+
+        const flavors = (product.flavor || '').split(',').map(f => f.trim()).filter(f => f);
+        if (flavors.length > 0) {
+            pdFlavorsList.innerHTML = flavors.map(f =>
+                `<button type="button" class="flavor-btn" data-flavor="${f}">${f}</button>`
+            ).join('');
+            pdFlavorsBox.style.display = 'block';
+
+            pdFlavorsList.querySelectorAll('.flavor-btn').forEach(btn => {
+                btn.addEventListener('click', () => {
+                    pdFlavorsList.querySelectorAll('.flavor-btn').forEach(b => b.classList.remove('selected'));
+                    btn.classList.add('selected');
+                    pdCurrent.selectedFlavor = btn.dataset.flavor;
+                    pdFlavorWarning.classList.remove('show');
+                });
+            });
+        } else {
+            pdFlavorsBox.style.display = 'none';
+        }
+
+        pdPrice.innerHTML = `${formatPrice(product.price).replace(' MDL','')}<small>MDL</small>`;
+
+        pdOverlay.classList.add('open');
+        document.body.style.overflow = 'hidden';
+    }
+
+    function closeProductDetail() {
+        pdOverlay.classList.remove('open');
+        document.body.style.overflow = '';
+        pdCurrent = null;
+    }
+
+    productsGrid.addEventListener('click', (e) => {
+        if (e.target.closest('.add-btn')) return;
+        const card = e.target.closest('.product-card');
+        if (!card) return;
+        const product = products.find(p => String(p.id) === String(card.dataset.id));
+        if (!product) return;
+        openProductDetail(product);
+    });
+
+    pdClose.addEventListener('click', closeProductDetail);
+    pdOverlay.addEventListener('click', (e) => { if (e.target === pdOverlay) closeProductDetail(); });
+    document.addEventListener('keydown', (e) => {
+        if (e.key === 'Escape' && pdOverlay.classList.contains('open')) closeProductDetail();
+    });
+
+    pdAddBtn.addEventListener('click', () => {
+        if (!pdCurrent) return;
+
+        const hasFlavors = (pdCurrent.flavor || '').split(',').map(f => f.trim()).filter(f => f).length > 0;
+        if (hasFlavors && !pdCurrent.selectedFlavor) {
+            pdFlavorWarning.classList.add('show');
+            return;
+        }
+
+        const productToAdd = { ...pdCurrent };
+        if (pdCurrent.selectedFlavor) {
+            productToAdd.selectedFlavor = pdCurrent.selectedFlavor;
+            productToAdd.title = `${pdCurrent.title} (${pdCurrent.selectedFlavor})`;
+            productToAdd.id = `${pdCurrent.id}_${pdCurrent.selectedFlavor}`;
+        }
+
+        CartModule.add(productToAdd);
+        window.ShopUI.updateCartUI();
+        window.ShopUI.showToast(`«${productToAdd.title}» добавлен`);
+        closeProductDetail();
+    });
+
     productsGrid.addEventListener('click', (e) => {
         const btn = e.target.closest('.add-btn');
         if (!btn) return;
+        e.stopPropagation();
         const p = products.find(x => String(x.id) === String(btn.dataset.id));
         if (!p) return;
         CartModule.add(p);
@@ -664,7 +892,7 @@ const CartModule = (function () {
         items.forEach((item, idx) => {
             msg += `<b>${idx + 1}. ${item.title}</b>\n`;
             msg += `   🏷 ${catNames[item.category] || item.category}\n`;
-            if (item.flavor)   msg += `   🍓 Вкус: ${item.flavor}\n`;
+            if (item.selectedFlavor) msg += `   🍭 Вкус: ${item.selectedFlavor}\n`;
             if (item.volume)   msg += `   📏 Объём: ${item.volume}\n`;
             if (item.nicotine) msg += `   ⚡ Крепость: ${item.nicotine}\n`;
             if (item.ohm)      msg += `   🔌 Сопротивление: ${item.ohm}\n`;
@@ -724,22 +952,71 @@ const CartModule = (function () {
 })();
 (function () {
     const secretLogo = document.getElementById('secretLogo');
+    const loginOverlay = document.getElementById('adminLoginOverlay');
     const adminOverlay = document.getElementById('adminOverlay');
-    const adminClose = document.getElementById('adminCloseBtn');
+    const pinInput = document.getElementById('adminPinInput');
+    const loginBtn = document.getElementById('adminLoginBtn');
+    const loginCancel = document.getElementById('adminLoginCancel');
+    const loginError = document.getElementById('adminLoginError');
 
     let clickCount = 0, clickTimer = null;
     secretLogo.addEventListener('click', () => {
         clickCount++;
         clearTimeout(clickTimer);
-        clickTimer = setTimeout(() => { clickCount = 0; }, 800);
-        if (clickCount >= 3) { clickCount = 0; openAdmin(); }
+        clickTimer = setTimeout(() => { clickCount = 0; }, 900);
+        if (clickCount >= 7) { clickCount = 0; openLogin(); }
     });
 
-    function openAdmin() { adminOverlay.classList.add('open'); if (window.renderAdminList) window.renderAdminList(); }
-    function closeAdmin() { adminOverlay.classList.remove('open'); }
-    adminClose.addEventListener('click', closeAdmin);
+    function openLogin() {
+        pinInput.value = '';
+        loginError.textContent = '';
+        loginOverlay.classList.add('open');
+        setTimeout(() => pinInput.focus(), 200);
+    }
+
+    function closeLogin() {
+        loginOverlay.classList.remove('open');
+        pinInput.value = '';
+        loginError.textContent = '';
+    }
+
+    function openAdmin() {
+        closeLogin();
+        adminOverlay.classList.add('open');
+        if (window.renderAdminList) window.renderAdminList();
+    }
+
+    function closeAdmin() {
+        adminOverlay.classList.remove('open');
+    }
+
+    loginBtn.addEventListener('click', () => {
+        const pin = pinInput.value.trim();
+        if (pin === ADMIN_PIN) {
+            openAdmin();
+        } else {
+            loginError.textContent = '❌ Неверный PIN-код';
+            pinInput.value = '';
+            pinInput.focus();
+        }
+    });
+
+    pinInput.addEventListener('keydown', (e) => {
+        if (e.key === 'Enter') loginBtn.click();
+    });
+
+    loginCancel.addEventListener('click', closeLogin);
+    loginOverlay.addEventListener('click', (e) => { if (e.target === loginOverlay) closeLogin(); });
+
+    document.getElementById('adminCloseBtn').addEventListener('click', closeAdmin);
     adminOverlay.addEventListener('click', (e) => { if (e.target === adminOverlay) closeAdmin(); });
-    document.addEventListener('keydown', (e) => { if (e.key === 'Escape' && adminOverlay.classList.contains('open')) closeAdmin(); });
+
+    document.addEventListener('keydown', (e) => {
+        if (e.key === 'Escape') {
+            if (adminOverlay.classList.contains('open')) closeAdmin();
+            if (loginOverlay.classList.contains('open')) closeLogin();
+        }
+    });
 
     const fId = document.getElementById('field-id');
     const fTitle = document.getElementById('field-title');
@@ -759,6 +1036,8 @@ const CartModule = (function () {
         fId.value=''; fTitle.value=''; fPrice.value=''; fCat.value='vape';
         fBadge.value=''; fDesc.value=''; fFlavor.value=''; fVolume.value='';
         fNicotine.value=''; fOhm.value=''; fPower.value=''; fImage.value=''; fIcon.value='fa-smoking';
+        const box = document.getElementById('imagePreviewBox');
+        if (box) box.style.display = 'none';
     }
     document.getElementById('resetFormBtn').addEventListener('click', resetForm);
 
@@ -799,6 +1078,69 @@ const CartModule = (function () {
         window.ShopUI.renderProducts();
         if (window.renderAdminList) window.renderAdminList();
         resetForm();
+    });
+})();
+(function () {
+    const pickImageBtn = document.getElementById('pickImageBtn');
+    const clearImageBtn = document.getElementById('clearImageBtn');
+    const imageFileInput = document.getElementById('imageFileInput');
+    const imagePreviewBox = document.getElementById('imagePreviewBox');
+    const imagePreview = document.getElementById('imagePreview');
+    const imageUploadStatus = document.getElementById('imageUploadStatus');
+    const fieldImage = document.getElementById('field-image');
+
+    function updatePreview() {
+        const url = fieldImage.value.trim();
+        if (url) {
+            imagePreview.src = url;
+            imagePreviewBox.style.display = 'block';
+            imagePreview.onerror = () => { imagePreviewBox.style.display = 'none'; };
+        } else {
+            imagePreviewBox.style.display = 'none';
+        }
+    }
+    fieldImage.addEventListener('input', updatePreview);
+
+    pickImageBtn.addEventListener('click', () => imageFileInput.click());
+
+    imageFileInput.addEventListener('change', async (e) => {
+        const file = e.target.files[0];
+        if (!file) return;
+        if (file.size > 5 * 1024 * 1024) {
+            imageUploadStatus.textContent = '❌ Файл больше 5 МБ';
+            imageUploadStatus.style.color = 'var(--danger)';
+            return;
+        }
+        if (!file.type.startsWith('image/')) {
+            imageUploadStatus.textContent = '❌ Только картинки';
+            imageUploadStatus.style.color = 'var(--danger)';
+            return;
+        }
+        imageUploadStatus.textContent = '⏳ Загрузка...';
+        imageUploadStatus.style.color = 'var(--cyan)';
+        try {
+            const ext = file.name.split('.').pop();
+            const filename = `products/${Date.now()}_${Math.random().toString(36).slice(2,8)}.${ext}`;
+            const ref = storage.ref(filename);
+            await ref.put(file);
+            const url = await ref.getDownloadURL();
+            fieldImage.value = url;
+            updatePreview();
+            imageUploadStatus.textContent = '✅ Фото загружено!';
+            imageUploadStatus.style.color = 'var(--success)';
+            setTimeout(() => { imageUploadStatus.textContent = ''; }, 3000);
+        } catch (err) {
+            console.error(err);
+            imageUploadStatus.textContent = '❌ Ошибка: ' + err.message;
+            imageUploadStatus.style.color = 'var(--danger)';
+        }
+        imageFileInput.value = '';
+    });
+
+    clearImageBtn.addEventListener('click', () => {
+        fieldImage.value = '';
+        imagePreviewBox.style.display = 'none';
+        imageUploadStatus.textContent = '';
     });
 })();
 
@@ -846,6 +1188,10 @@ const CartModule = (function () {
             document.getElementById('field-power').value = p.power || '';
             document.getElementById('field-image').value = p.image || '';
             document.getElementById('field-icon').value = p.icon || 'fa-smoking';
+            const box = document.getElementById('imagePreviewBox');
+            const img = document.getElementById('imagePreview');
+            if (p.image) { img.src = p.image; box.style.display = 'block'; }
+            else { box.style.display = 'none'; }
             window.ShopUI.showToast('Загружено в форму');
             document.querySelectorAll('.admin-tab').forEach(t => t.classList.remove('active'));
             document.querySelector('.admin-tab[data-tab="form"]').classList.add('active');
@@ -929,4 +1275,4 @@ if ('serviceWorker' in navigator) {
 }
 </script>
 </body>
-</html>  
+</html>
