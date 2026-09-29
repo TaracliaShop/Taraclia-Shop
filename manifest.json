@@ -1,6 +1,6 @@
 {
   "name": "Taraclia&Shop",
-  "short_name": "Taraclia",
+  "short_name": "Taraclia&Shop",
   "start_url": "./index.html",
   "display": "standalone",
   "orientation": "portrait",
