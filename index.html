@@ -131,12 +131,13 @@ body::after{width:450px;height:450px;background:var(--cyan);bottom:-180px;right:
 .order-submit-btn:disabled{opacity:.6;cursor:not-allowed}
 .order-cancel-btn{width:100%;background:transparent;border:1px solid var(--border);color:var(--text-dim);font-weight:600;font-size:.9rem;padding:.8rem;border-radius:1.2rem;cursor:pointer;font-family:inherit;transition:.2s}
 .order-cancel-btn:hover{border-color:var(--danger);color:var(--danger)}
-/* PRODUCT FLAVORS */
-.product-detail-flavors{margin-bottom:1.2rem}
+/* PRODUCT FLAVORS — С ПРОКРУТКОЙ */
+.product-detail-flavors{margin-bottom:1.2rem;position:relative}
 .product-detail-flavors-label{font-size:.85rem;color:var(--text-dim);font-weight:700;margin-bottom:.6rem;text-transform:uppercase;letter-spacing:.5px;display:flex;align-items:center;gap:.5rem}
 .product-detail-flavors-label i{color:var(--neon-2)}
-.product-detail-flavors-list{display:flex;flex-wrap:wrap;gap:.5rem}
-.flavor-btn{background:var(--surface);border:1.5px solid var(--border);color:var(--text-dim);padding:.55rem 1rem;border-radius:2rem;cursor:pointer;font-weight:600;font-size:.85rem;font-family:inherit;transition:.2s;display:flex;align-items:center;gap:.4rem}
+.product-detail-flavors-list{display:flex;flex-wrap:nowrap;gap:.5rem;overflow-x:auto;overflow-y:hidden;padding-bottom:.5rem;scrollbar-width:none;-ms-overflow-style:none;scroll-behavior:smooth}
+.product-detail-flavors-list::-webkit-scrollbar{display:none}
+.flavor-btn{background:var(--surface);border:1.5px solid var(--border);color:var(--text-dim);padding:.55rem 1rem;border-radius:2rem;cursor:pointer;font-weight:600;font-size:.85rem;font-family:inherit;transition:.2s;display:flex;align-items:center;gap:.4rem;flex-shrink:0;white-space:nowrap}
 .flavor-btn:hover{border-color:var(--border-hi);color:var(--text)}
 .flavor-btn.selected{background:linear-gradient(135deg,var(--neon),var(--neon-2));border-color:transparent;color:#fff;box-shadow:0 0 20px rgba(168,85,247,0.5)}
 .flavor-btn.selected::before{content:'✓';font-weight:900}
@@ -448,7 +449,6 @@ body::after{width:450px;height:450px;background:var(--cyan);bottom:-180px;right:
     </div>
 </div>
 <script>
-// 🔒 ЖЁСТКИЙ ЗАМОК
 const IS_ALLOWED = (function () {
     const ua = navigator.userAgent || '';
     const url = location.href || '';
@@ -671,7 +671,6 @@ const CartModule = (function () {
     const closeCart = () => cartPanel.classList.remove('open');
     window.ShopUI = { renderProducts, updateCartUI, showToast, closeCart };
 
-    // ===== КАРТОЧКА =====
     const pdOverlay = document.getElementById('productDetailOverlay');
     const pdClose = document.getElementById('productDetailClose');
     const pdImg = document.getElementById('pdImg');
@@ -741,6 +740,8 @@ const CartModule = (function () {
                     btn.classList.add('selected');
                     pdCurrent.selectedFlavor = btn.dataset.flavor;
                     pdFlavorWarning.classList.remove('show');
+                    // прокрутить к выбранному
+                    btn.scrollIntoView({ behavior: 'smooth', block: 'nearest', inline: 'center' });
                 });
             });
         } else {
@@ -1266,7 +1267,7 @@ const CartModule = (function () {
     });
 })();
 
-} // закрытие блока else (IS_ALLOWED)
+} // закрытие блока else
 
 if ('serviceWorker' in navigator) {
     window.addEventListener('load', () => {
@@ -1275,4 +1276,4 @@ if ('serviceWorker' in navigator) {
 }
 </script>
 </body>
-</html>
+</html>    
